@@ -1,0 +1,58 @@
+<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="VM Printer Manager" Height="720" Width="940" MinHeight="600" MinWidth="800" WindowStartupLocation="CenterScreen"
+        Background="#0A1428" FontFamily="Segoe UI" FontSize="13" Foreground="#E6F1FF">
+    <Window.Resources>
+        <Style TargetType="TextBlock"><Setter Property="Foreground" Value="#E6F1FF"/></Style>
+        <Style TargetType="CheckBox"><Setter Property="Foreground" Value="#E6F1FF"/><Setter Property="Margin" Value="0,3"/></Style>
+        <Style TargetType="TextBox"><Setter Property="Background" Value="#0B1730"/><Setter Property="Foreground" Value="#E6F1FF"/><Setter Property="BorderBrush" Value="#1E3560"/><Setter Property="Padding" Value="6,5"/></Style>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="#1B2E55"/><Setter Property="Foreground" Value="#E6F1FF"/><Setter Property="BorderBrush" Value="#1E3560"/><Setter Property="Padding" Value="14,7"/><Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="Button"><Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" CornerRadius="5" Padding="{TemplateBinding Padding}"><ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
+            <ControlTemplate.Triggers><Trigger Property="IsMouseOver" Value="True"><Setter Property="Background" Value="#24407A"/></Trigger><Trigger Property="IsEnabled" Value="False"><Setter Property="Opacity" Value="0.45"/></Trigger></ControlTemplate.Triggers></ControlTemplate></Setter.Value></Setter>
+        </Style>
+        <Style x:Key="Primary" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}"><Setter Property="Background" Value="#1E9BFF"/><Setter Property="Foreground" Value="White"/><Setter Property="FontWeight" Value="SemiBold"/></Style>
+        <Style x:Key="H2" TargetType="TextBlock"><Setter Property="FontWeight" Value="SemiBold"/><Setter Property="Foreground" Value="#38D6FF"/><Setter Property="Margin" Value="0,8,0,4"/></Style>
+        <Style x:Key="Hint" TargetType="TextBlock"><Setter Property="Foreground" Value="#8FA3C7"/><Setter Property="TextWrapping" Value="Wrap"/><Setter Property="FontSize" Value="12"/></Style>
+        <Style TargetType="TabItem"><Setter Property="Foreground" Value="#0A1428"/><Setter Property="FontWeight" Value="SemiBold"/><Setter Property="Padding" Value="16,6"/></Style>
+    </Window.Resources>
+    <Grid Margin="18">
+        <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="170"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+        <Border Background="#111F3A" BorderBrush="#1E3560" BorderThickness="1" CornerRadius="8" Padding="14,10" Margin="0,0,0,12">
+            <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                <Image Name="imgLogo" Width="44" Height="44" Margin="0,0,12,0"/>
+                <StackPanel Grid.Column="1" VerticalAlignment="Center"><TextBlock Text="VM PRINTER MANAGER" FontSize="17" FontWeight="Bold" Foreground="#38D6FF"/><TextBlock Text="Controllo, esportazione e importazione delle stampanti installate (driver, porte, impostazioni, predefinita)." Style="{StaticResource Hint}"/></StackPanel>
+                <StackPanel Grid.Column="2" VerticalAlignment="Center"><TextBlock Name="lblComputer" FontWeight="SemiBold" HorizontalAlignment="Right"/><TextBlock Name="lblDefault" Style="{StaticResource Hint}" HorizontalAlignment="Right"/></StackPanel>
+            </Grid>
+        </Border>
+        <TabControl Name="tabs" Grid.Row="1" Background="#111F3A" BorderBrush="#1E3560">
+            <TabItem Header="Stampanti installate / Esporta">
+                <Grid Margin="12"><Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                    <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                        <TextBlock Name="lblCount" Style="{StaticResource H2}"/>
+                        <Button Name="btnAll" Grid.Column="1" Content="Tutte" Padding="10,4" Margin="0,0,6,0"/><Button Name="btnNone" Grid.Column="2" Content="Nessuna" Padding="10,4" Margin="0,0,6,0"/>
+                        <Button Name="btnRefresh" Grid.Column="3" Content="Aggiorna" Padding="10,4" Margin="0,0,6,0"/><Button Name="btnRepair" Grid.Column="4" Content="Ripara spooler" Padding="10,4"/></Grid>
+                    <ListBox Name="lstPrinters" Grid.Row="1" Background="#0B1730" BorderBrush="#1E3560" Foreground="#E6F1FF" Margin="0,6"/>
+                    <WrapPanel Grid.Row="2"><CheckBox Name="chkDrivers" Content="Includi i pacchetti driver" IsChecked="True" Margin="0,3,18,3"/><CheckBox Name="chkSettings" Content="Includi le impostazioni di stampa" IsChecked="True" Margin="0,3,18,3"/><CheckBox Name="chkBrm" Content="Crea anche il file Microsoft .printerExport (se disponibile)" IsChecked="True"/></WrapPanel>
+                    <Grid Grid.Row="3" Margin="0,6,0,0"><Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                        <TextBlock Text="Salva in:" VerticalAlignment="Center" Margin="0,0,8,0"/><TextBox Name="txtExportDest" Grid.Column="1"/><Button Name="btnExportBrowse" Grid.Column="2" Content="..." Padding="8,5" Margin="6,0"/><Button Name="btnExport" Grid.Column="3" Content="Esporta selezionate" Style="{StaticResource Primary}"/></Grid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Importa da pacchetto">
+                <Grid Margin="12"><Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                    <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                        <TextBlock Text="Pacchetto:" VerticalAlignment="Center" Margin="0,0,8,0"/><TextBox Name="txtImportPkg" Grid.Column="1"/><Button Name="btnImportBrowse" Grid.Column="2" Content="Sfoglia..." Margin="6,0,0,0"/></Grid>
+                    <TextBlock Name="lblPkgInfo" Grid.Row="1" Style="{StaticResource Hint}" Margin="0,6" Text="Seleziona la cartella Stampanti_... creata dall'esportazione."/>
+                    <ListBox Name="lstImport" Grid.Row="2" Background="#0B1730" BorderBrush="#1E3560" Foreground="#E6F1FF"/>
+                    <WrapPanel Grid.Row="3" Margin="0,6,0,0"><CheckBox Name="chkOverwrite" Content="Sostituisci le stampanti gia' presenti" Margin="0,3,18,3"/><CheckBox Name="chkImpSettings" Content="Ripristina impostazioni di stampa" IsChecked="True" Margin="0,3,18,3"/><CheckBox Name="chkImpDefault" Content="Ripristina predefinita" IsChecked="True" Margin="0,3,18,3"/><CheckBox Name="chkAllUsers" Content="Stampanti condivise per tutti gli utenti del PC"/></WrapPanel>
+                    <Button Name="btnImport" Grid.Row="4" Content="Importa selezionate" Style="{StaticResource Primary}" HorizontalAlignment="Right" Margin="0,6,0,0" IsEnabled="False"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
+        <TextBox Name="txtLog" Grid.Row="2" IsReadOnly="True" Background="#060D1C" Foreground="#9FE8FF" FontFamily="Consolas" FontSize="12" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Padding="8" Margin="0,10,0,0"/>
+        <Grid Grid.Row="3" Margin="0,8,0,0"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="220"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+            <TextBlock Name="lblStatus" Style="{StaticResource Hint}" VerticalAlignment="Center" Text="Pronto."/>
+            <ProgressBar Name="progressBar" Grid.Column="1" Height="14" Minimum="0" Maximum="100" Foreground="#38D6FF" Background="#0B1730" BorderBrush="#1E3560"/>
+            <Button Name="btnOpenFolder" Grid.Column="2" Content="Apri cartella" Margin="10,0,0,0" IsEnabled="False"/>
+        </Grid>
+    </Grid>
+</Window>

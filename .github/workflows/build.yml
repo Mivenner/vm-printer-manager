@@ -1,0 +1,70 @@
+name: Build VM Printer Manager
+
+on:
+  push:
+    branches: [ main ]
+    tags: [ 'v*' ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verifica sintassi
+        shell: pwsh
+        run: .\Tests\Test-Syntax.ps1
+      - name: Test reale esporta/importa (Windows PowerShell 5.1)
+        shell: powershell
+        run: |
+          Set-ExecutionPolicy -Scope Process Bypass -Force
+          .\Tests\Test-RoundTrip.ps1
+      - name: Installa Inno Setup 6
+        shell: pwsh
+        run: choco install innosetup --no-progress -y
+      - name: Compila exe + installer
+        shell: powershell
+        run: |
+          Set-ExecutionPolicy -Scope Process Bypass -Force
+          $v = if ($env:GITHUB_REF -like 'refs/tags/v*') { $env:GITHUB_REF.Substring(11) } else { '1.0.' + $env:GITHUB_RUN_NUMBER }
+          .\Build.ps1 -Version $v
+          Copy-Item "dist\VMPrinterManager_Portable_$v.zip" dist\VMPrinterManager_Portable.zip -Force
+          Get-ChildItem dist\VMPrinterManager_Setup_*.exe | Select-Object -First 1 | Copy-Item -Destination dist\VMPrinterManager_Setup.exe -Force
+          .\Make-Portable.ps1 -Version $v
+          "VERSIONE=$v" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+      - name: Carica artefatti
+        uses: actions/upload-artifact@v4
+        with:
+          name: VMPrinterManager
+          path: |
+            dist/VMPrinterManager.exe
+            dist/VMPrinterManager_Portable_*.zip
+            dist/VMPrinterManager_Setup_*.exe
+      - name: Tag "latest"
+        if: github.ref == 'refs/heads/main'
+        shell: pwsh
+        run: |
+          git config user.name "github-actions"; git config user.email "actions@github.com"
+          git tag -f latest; git push -f origin latest
+      - name: Release "latest"
+        if: github.ref == 'refs/heads/main'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: latest
+          name: "Ultima build (${{ env.VERSIONE }})"
+          body: "Build automatica dall'ultimo commit su main. Link fissi: VMPrinterManager_Portable.zip e VMPrinterManager_Setup.exe"
+          prerelease: true
+          files: |
+            dist/VMPrinterManager_Portable.zip
+            dist/VMPrinterManager_Portable.cmd
+            dist/VMPrinterManager_Setup.exe
+      - name: Release per tag v*
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/VMPrinterManager_Portable_*.zip
+            dist/VMPrinterManager_Setup_*.exe
