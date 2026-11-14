@@ -1,4 +1,18 @@
-# VM Printer Manager 1.0
+<!-- header -->
+<p align="center"><img src="logo.png" width="96" alt="vm technology"></p>
+<h1 align="center">VM Printer Manager</h1>
+<p align="center">Controlla, esporta e importa le stampanti installate su Windows: driver, porte IP, impostazioni e predefinita.</p>
+<p align="center">
+  <a href="https://github.com/Mivenner/vm-printer-manager/actions/workflows/build.yml"><img src="https://github.com/Mivenner/vm-printer-manager/actions/workflows/build.yml/badge.svg" alt="Build"></a>
+  <img src="https://img.shields.io/badge/Windows-10%20%7C%2011-0078D4" alt="Windows 10 | 11">
+  <img src="https://img.shields.io/badge/PowerShell-5.1%20%7C%207-5391FE" alt="PowerShell 5.1 | 7">
+</p>
+
+**Download dell'ultima build:** [File singolo .cmd](https://github.com/Mivenner/vm-printer-manager/releases/latest/download/VMPrinterManager_Portable.cmd) · [Zip portable](https://github.com/Mivenner/vm-printer-manager/releases/latest/download/VMPrinterManager_Portable.zip) · [Installer](https://github.com/Mivenner/vm-printer-manager/releases/latest/download/VMPrinterManager_Setup.exe)
+
+Altri strumenti vm technology: [Migration Suite](https://github.com/Mivenner/vm-migration-suite) · [Health Check](https://github.com/Mivenner/vm-health-check) · [Setup Suite](https://github.com/Mivenner/vm-setup-suite) · [Printer Manager](https://github.com/Mivenner/vm-printer-manager)
+
+---
 
 Controlla le stampanti installate su un PC Windows 10/11 e le **esporta/importa** su un altro PC: driver, porte TCP/IP, impostazioni di stampa, connessioni condivise e stampante predefinita. Funziona anche su Windows Home, dove lo strumento Microsoft "Migrazione stampanti" (PrintBrm) non c'e'.
 
